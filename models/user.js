@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const CustomerSchemea = mongoose.Schema({
+const UserSchemea = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,10 +12,18 @@ const CustomerSchemea = mongoose.Schema({
     type: String,
     required: true,
   },
-  createdBy: {
+  uid: {
     type: String,
     required: true,
   },
+  createdBy: {
+    type: String,
+    required: false,
+  },
+  userType: {
+    type: String,
+    enum: ["admin", "dealer", "customer"],
+  },
 });
 
-module.exports = mongoose.model("Customer", CustomerSchemea);
+module.exports = mongoose.model("User", UserSchemea);

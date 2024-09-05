@@ -1,0 +1,10 @@
+const router = require("express").Router();
+const AdminRoute = require("./admin.js");
+const DealerRoute = require("./dealer.js");
+const CustomerRoute = require("./customer.js");
+const LoginRoute = require("./login.js");
+router.use("/admin", AdminRoute);
+router.use("/dealer", DealerRoute);
+router.use("/customer", CustomerRoute);
+router.use("/login", LoginRoute);
+module.exports = router;
