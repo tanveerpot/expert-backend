@@ -15,7 +15,6 @@ exports.addDealer = async (req, res) => {
       console.log("Saving");
       await dealer.save();
       try {
-        // Create a new user with email and password
         const userRecord = await auth.createUser({
           name: dealer.name,
           email: dealer.email,
@@ -41,17 +40,16 @@ exports.addDealer = async (req, res) => {
     res.json(err);
   }
 };
-// FUNCTION TO GET EMPLOYEE
+
 exports.getDealer = async (req, res) => {
   try {
     const dealer = await Dealer.find();
-    // console.log(dealer);
     const names = dealer.map((dealer) => ({
       name: dealer.name,
       email: dealer.email,
     }));
 
-    console.log(names); // Output: ['Dealer1', 'Dealer2']
+    console.log(names);
     res.json(names);
   } catch (err) {
     res.json(err);
@@ -77,7 +75,6 @@ exports.updateDealer = async (req, res) => {
   }
 };
 const isValidEmail = (email) => {
-  // Simple regex for basic email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
@@ -88,15 +85,12 @@ exports.deleteDealer = async (req, res) => {
     console.log(req);
     console.log("Dealer email:", email);
 
-    // Delete dealer
     await Dealer.deleteOne({ email: email });
 
-    // Find customers created by this dealer
     const customers = await Customer.find({ createdBy: email });
     const emails = customers.map((customer) => customer.email);
-    emails.push(email); // Also add the dealer's own email to the list
+    emails.push(email);
 
-    // Filter valid emails
     const validEmails = emails.filter(isValidEmail);
 
     if (validEmails.length === 0) {
@@ -104,7 +98,6 @@ exports.deleteDealer = async (req, res) => {
     }
 
     try {
-      // Delete users from Firebase and MongoDB
       for (const validEmail of validEmails) {
         try {
           const user = await auth.getUserByEmail(validEmail);
